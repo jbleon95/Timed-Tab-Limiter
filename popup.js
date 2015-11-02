@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', function () {
+/*document.addEventListener('DOMContentLoaded', function () {
    var bg = chrome.extension.getBackgroundPage();
    var statusText = ""
    setInterval(function () {
@@ -8,6 +8,20 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 
-/*function renderStatus(statusText) {
+function renderStatus(statusText) {
   document.getElementById('status').textContent = statusText;
 }*/
+
+var updateWindow = function() {
+   var bg = chrome.extension.getBackgroundPage();
+   var statusText = "";
+   setInterval(function () {
+   		statusText = "";
+   		for (var tabID in bg.totalTabTimers){
+   			statusText += bg.totalTabTimers[tabID].url + ': ' + bg.totalTabTimers[tabID].timer + '\n';
+    	}
+    	document.getElementById('status').textContent = statusText;
+    }, 100);
+}
+
+updateWindow();

@@ -16,7 +16,7 @@ chrome.tabs.onRemoved.addListener(function(tabID) {
 });
 
 var settings = {
-	timerLength: 10
+	timerLength: 300
 };
 
 
