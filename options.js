@@ -15,6 +15,9 @@ function saveOptions() {
     if (isInteger(time) && time > 0){
         chrome.storage.sync.set({"timerLength": time}, function() {
             console.log(time);
+            chrome.runtime.sendMessage({
+                settings: "updated"
+            });
             updateStatus('Options saved.', 750)
       });
     }

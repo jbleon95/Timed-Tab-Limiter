@@ -1,11 +1,9 @@
 chrome.tabs.onCreated.addListener(function(tab) {
-	updateSettings();
     addTab(tab);
 });
 
 chrome.tabs.onActivated.addListener(function(tab) {
 	console.log("Tab Activated: " + tab.tabId);
-    updateSettings();
 	updateTab(tab.tabId);
 });
 
@@ -22,6 +20,12 @@ chrome.tabs.onReplaced.addListener(function(addedTabId, removedTabId) {
     delete totalTabTimers[removedTabId];
 });
 
+chrome.runtime.onMessage.addListener(
+  function(request) {
+    if (request.settings == "updated")
+        updateSettings();
+  });
+
 var settings = {
 	timerLength: 300
 };
@@ -30,7 +34,7 @@ var settings = {
 totalTabTimers = {};
 
 var addTab = function(tab) {
-    if (totalTabTimers[tab.id] === undefined){
+    if (totalTabTimers[tab.id] === undefined && notOptions(tab)){
         totalTabTimers[tab.id] = {
         	timer : settings.timerLength,
         	url : tab.url
@@ -80,4 +84,11 @@ var updateSettings = function() {
     });
 }
 
+var notOptions = function(tab) {
+    var URL = tab.url;
+    var endURL = URL.substr(URL.length - 12);
+    return endURL !== 'options.html'
+}
+
+updateSettings();
 countdown();
