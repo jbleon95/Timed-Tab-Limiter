@@ -17,6 +17,11 @@ chrome.tabs.onRemoved.addListener(function(tabID) {
 	delete totalTabTimers[tabID];
 });
 
+chrome.tabs.onReplaced.addListener(function(addedTabId, removedTabId) {
+    totalTabTimers[addedTabId] = totalTabTimers[removedTabId];
+    delete totalTabTimers[removedTabId];
+});
+
 var settings = {
 	timerLength: 300
 };
