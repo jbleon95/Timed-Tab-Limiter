@@ -15,27 +15,26 @@ function saveOptions() {
     if (isInteger(time) && time > 0){
         chrome.storage.sync.set({"timerLength": time}, function() {
             console.log(time);
-            var status = document.getElementById('status');
-            status.textContent = 'Options saved.';
-            setTimeout(function() {
-                status.textContent = '';
-            }, 750);
+            updateStatus('Options saved.', 750)
       });
     }
     else if (isInteger(time)) {
-        var status = document.getElementById('status');
-        status.textContent = 'Timer Length must be greater than zero.';
-        setTimeout(function() {
-            status.textContent = '';
-        }, 1000);
+        updateStatus('Timer Length must be greater than zero.', 2000)
     }
     else {
-        var status = document.getElementById('status');
-        status.textContent = 'Not an Integer.';
+        updateStatus('Not an Integer.', 2000)
+    }
+}
+
+function updateStatus(msg, length) {
+    if (length === undefined) {
+        length = 1000
+    }  
+    var status = document.getElementById('status');
+        status.textContent = msg;
         setTimeout(function() {
             status.textContent = '';
-        }, 1000);
-    }
+        }, length);
 }
 
 function isInteger(x) {
