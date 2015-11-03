@@ -1,9 +1,11 @@
 chrome.tabs.onCreated.addListener(function(tab) {
-	addTab(tab);
+	updateSettings();
+    addTab(tab);
 });
 
 chrome.tabs.onActivated.addListener(function(tab) {
 	console.log("Tab Activated: " + tab.tabId);
+    updateSettings();
 	updateTab(tab.tabId);
 });
 
@@ -64,5 +66,13 @@ var removeTabs = function(windowId) {
         }
     }
 };
+
+var updateSettings = function() {
+    chrome.storage.sync.get("timerLength", function(items) {
+        if (items.timerLength !== undefined) {
+            settings.timerLength = items.timerLength;
+        }
+    });
+}
 
 countdown();
