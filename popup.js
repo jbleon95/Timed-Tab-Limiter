@@ -22,6 +22,7 @@ var updateWindow = function() {
     	}
     	document.getElementById('status').textContent = statusText;
       document.getElementById('tabCount').textContent = bg.tabCount;
+      document.getElementById('tabGoal').textContent = bg.settings.tabGoal;
     }, 100);
 }
 

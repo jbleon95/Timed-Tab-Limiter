@@ -32,7 +32,8 @@ chrome.runtime.onMessage.addListener(
 var tabCount = 0;
 
 var settings = {
-	timerLength: 300
+	timerLength: 300,
+    tabGoal: 10
 };
 
 totalTabTimers = {};
@@ -79,12 +80,12 @@ var removeTabs = function(windowId) {
 };
 
 var updateSettings = function() {
-    chrome.storage.sync.get("timerLength", function(items) {
-        if (items.timerLength !== undefined) {
-            settings.timerLength = items.timerLength;
-        }
+    chrome.storage.sync.get("settings", function(items) {
+        settings.timerLength = items.settings.timerLength;
+        settings.tabGoal = items.settings.tabGoal;
     });
 };
+
 
 var notOptions = function(tab) {
     var URL = tab.url;
