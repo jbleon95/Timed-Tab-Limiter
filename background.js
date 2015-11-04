@@ -1,4 +1,5 @@
 chrome.tabs.onCreated.addListener(function(tab) {
+    tabCount++;
     addTab(tab);
 });
 
@@ -8,10 +9,11 @@ chrome.tabs.onActivated.addListener(function(tab) {
 });
 
 chrome.tabs.onUpdated.addListener(function(tabID, changeInfo, tab) {
-	totalTabTimers[tabID].url = tab.url;
+	updateURL(tab);
 });
 
 chrome.tabs.onRemoved.addListener(function(tabID) {
+    tabCount--;
 	delete totalTabTimers[tabID];
 });
 
@@ -26,10 +28,12 @@ chrome.runtime.onMessage.addListener(
         updateSettings();
   });
 
+
+var tabCount = 0;
+
 var settings = {
 	timerLength: 300
 };
-
 
 totalTabTimers = {};
 
@@ -51,10 +55,8 @@ var updateTab = function(tabID) {
     }
 };
 
-var updateUrl = function(tabID) {
-	chrome.tabs.query({'active': true, 'lastFocusedWindow': true}, function (tabs) {
-    	totalTabTimers[tabID].url = tabs[0].url;
-	});
+var updateURL = function(tab) {
+    totalTabTimers[tab.id].url = tab.url;
 }
 
 var countdown = function() {
@@ -82,13 +84,23 @@ var updateSettings = function() {
             settings.timerLength = items.timerLength;
         }
     });
-}
+};
 
 var notOptions = function(tab) {
     var URL = tab.url;
     var endURL = URL.substr(URL.length - 12);
     return endURL !== 'options.html'
-}
+};
 
+var getTabCount = function(tab) {
+    chrome.windows.getAll({"populate" : true}, function(windows) {
+        for(var i = 0; i < windows.length; i++)
+        {
+            tabCount += windows[i].tabs.length;
+        }
+    });
+};
+
+getTabCount();
 updateSettings();
 countdown();

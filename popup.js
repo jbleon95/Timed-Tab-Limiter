@@ -21,6 +21,7 @@ var updateWindow = function() {
    			statusText += bg.totalTabTimers[tabID].url + ': ' + bg.totalTabTimers[tabID].timer + '\n';
     	}
     	document.getElementById('status').textContent = statusText;
+      document.getElementById('tabCount').textContent = bg.tabCount;
     }, 100);
 }
 
