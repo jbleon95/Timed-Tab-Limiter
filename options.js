@@ -2,6 +2,7 @@ function loadOptions() {
     chrome.storage.sync.get("settings", function(items) {
         loadSetting(items.settings.timerLength, 'time', 300);
         loadSetting(items.settings.tabGoal, 'tabGoal', 10);
+        loadSetting(items.settings.tabLimit, 'tabLimit', 15);
   });
 }
 
@@ -17,11 +18,16 @@ function loadSetting(setting, element, defaultSetting) {
 function saveOptions() {
     var time = +document.getElementById("time").value;
     var tabGoal = +document.getElementById("tabGoal").value;
-    if (validInput(time) && validInput(tabGoal)){
+    var tabLimit = +document.getElementById("tabLimit").value;
+    if (tabLimit <= tabGoal){
+        updateStatus('Tab Goal must be less than Tab Limit', 2000)
+    }
+    else if (validInput(time) && validInput(tabGoal) && validInput(tabLimit)){
         chrome.storage.sync.set({
             "settings": {
                 "timerLength": time,
-                "tabGoal": tabGoal
+                "tabGoal": tabGoal,
+                "tabLimit" : tabLimit
             }
         }, function() {
             chrome.runtime.sendMessage({
@@ -30,7 +36,7 @@ function saveOptions() {
             updateStatus('Options saved.', 750)
       });
     }
-    else if (isInteger(time) && isInteger(tabGoal)) {
+    else if (isInteger(time) && isInteger(tabGoal) && isInteger(tabLimit)) {
         updateStatus('Parameters must be greater than zero.', 2000)
     }
     else {

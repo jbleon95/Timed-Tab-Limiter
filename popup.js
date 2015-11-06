@@ -1,17 +1,3 @@
-/*document.addEventListener('DOMContentLoaded', function () {
-   var bg = chrome.extension.getBackgroundPage();
-   var statusText = ""
-   setInterval(function () {
-        var statusText = bg.totalTabTimers;
-    }, 1000);
-    document.getElementById('status').textContent = statusText;
-});
-
-
-function renderStatus(statusText) {
-  document.getElementById('status').textContent = statusText;
-}*/
-
 var updateWindow = function() {
    var bg = chrome.extension.getBackgroundPage();
    var statusText = "";
@@ -23,6 +9,7 @@ var updateWindow = function() {
     	document.getElementById('status').textContent = statusText;
       document.getElementById('tabCount').textContent = bg.tabCount;
       document.getElementById('tabGoal').textContent = bg.settings.tabGoal;
+      document.getElementById('tabLimit').textContent = bg.settings.tabLimit;
     }, 100);
 }
 
