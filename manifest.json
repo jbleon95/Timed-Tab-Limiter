@@ -3,7 +3,7 @@
 
   "name": "Timed Tab Limiter",
   "description": "Time Limits your Tabs",
-  "version": "0.0.1",
+  "version": "0.5.0",
   "options_page": "options.html",
 
   "background": {
